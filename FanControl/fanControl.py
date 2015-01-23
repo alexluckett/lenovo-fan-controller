@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Lenovo Fan control indicator for the Unity desktop
+# Lenovo Ideapad Fan control indicator for the Unity desktop
 
 # Provided as-is without support, guarantees or warranty. Use entirely at your own risk.
 # Developed for a Lenovo z570 running Ubuntu 14.10 w/ Unity. May work on other Lenovo Ideapad systems 
@@ -7,11 +7,14 @@
 
 from gi.repository import Gtk
 from gi.repository import AppIndicator3 as Appindicator
-import subprocess
+import subprocess, os
 
 def setFanSpeed(widget, modeNumber):
 	if modeNumber in getFanSpeeds():
-		subprocess.call(['gksudo', 'python', 'fileWriter.py', str(modeNumber)])
+		filePath = '%s/fileWriter.py' % getCurrentPath()
+		
+		# run the fileWriter process as root, passing in the current mode as an argument
+		subprocess.call(['gksudo', 'python', filePath, str(modeNumber)]) 
 		
 		print modeNumber,': ' + getFanSpeeds()[modeNumber], 'applied'
 	else:
@@ -19,11 +22,14 @@ def setFanSpeed(widget, modeNumber):
 
 def getFanSpeeds():
 	return {0:'Silent Mode', 1:'Standard Mode', 2:'Dust Cleaning', 4:'Thermal Dissipation'}
+
+def getCurrentPath():
+	return os.path.dirname(os.path.abspath(__file__)) # retrieve the full path of this file
 	
 def displayAbout(widget):
 	about = Gtk.AboutDialog()
 	about.set_title('About Fan Control for Lenovo')
-	about.set_program_name('Lenovo z570 Fan Control')
+	about.set_program_name('Lenovo Ideapad Fan Control')
 	about.set_version('v0.1 alpha')
 	about.set_comments('THIS IS UNSUPPORTED SOFTWARE, USE ENTIRELY AT YOUR OWN RISK.')
 	about.set_website_label('http://github.com/alexluckett/LenovoFanControl')
