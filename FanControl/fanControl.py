@@ -26,7 +26,7 @@ def displayAbout(widget):
 	about.set_program_name('Lenovo z570 Fan Control')
 	about.set_version('v0.1 alpha')
 	about.set_comments('THIS IS UNSUPPORTED SOFTWARE, USE ENTIRELY AT YOUR OWN RISK.')
-	about.set_website_label('http://github.com/alexluckett/LenovoFanControlGUI')
+	about.set_website_label('http://github.com/alexluckett/LenovoFanControl')
 	about.set_website('http://github.com/alexluckett/LenovoFanControl')
 	
 	about.run()
