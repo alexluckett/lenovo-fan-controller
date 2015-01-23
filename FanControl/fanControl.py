@@ -1,29 +1,32 @@
 #!/usr/bin/env python
-# Fan control indicator for the Unity desktop - Ubuntu 14.10
+# Lenovo Fan control indicator for the Unity desktop
 
-#from gi.repository import AppIndicator3 as appindicator
+# Provided as-is without support, guarantees or warranty. Use entirely at your own risk.
+# Developed for a Lenovo z570 running Ubuntu 14.10 w/ Unity. May work on other Lenovo Ideapad systems 
+# although FAN_MODE_FILE in fileWriter may need to be altered to point to the location of your fan_mode file.
+
 from gi.repository import Gtk
 from gi.repository import AppIndicator3 as Appindicator
-
-currentFanMode = 0
+import subprocess
 
 def setFanSpeed(widget, modeNumber):
 	if modeNumber in getFanSpeeds():
-		#global currentFanMode
-		file = '' #TODO file path
-		writeToFile(file, modeNumber)
+		writeToFile(modeNumber)
 		
 		print modeNumber,': ' + getFanSpeeds()[modeNumber], 'applied'
 	else:
-		print 'Invalid fan mode entered: %s' % modeNumber
+		raise ValueError('Invalid fan mode entered: %s' % modeNumber)
 
 def getFanSpeeds():
 	return {0:'Silent Mode', 1:'Standard Mode', 2:'Dust Cleaning', 4:'Thermal Dissipation'}
 
 # TODO implement
-def writeToFile(file, content):
-	return 
-
+def writeToFile(mode):
+	subprocess.call(['gksudo', 'python', 'fileWriter.py', str(mode)])
+	#f = open(FAN_MODE_FILE, 'w')
+	#print 'current file:',f
+	#f.write(str(mode))
+	
 def displayAbout(widget):
 	about = Gtk.AboutDialog()
 	about.set_title('About Fan Control for Lenovo')
@@ -35,18 +38,22 @@ def displayAbout(widget):
 	
 	about.run()
 	about.destroy()
-
-if __name__ == "__main__":
+	
+def terminate(widget):
+	Gtk.main_quit()
+	
+def main():
 	indicator = Appindicator.Indicator.new (
-										"example-simple-client",
-										"stock_weather-fog", # temporarily using this until I make my own
-										Appindicator.IndicatorCategory.APPLICATION_STATUS)
+							"Lenovo Fan Control",
+							"stock_weather-fog", # temporarily using this until I make my own
+							Appindicator.IndicatorCategory.APPLICATION_STATUS
+						)
 	
 	indicator.set_status (Appindicator.IndicatorStatus.ACTIVE)
 	
 	menu = Gtk.Menu()
 	
-	# fan speeds
+	# fan speed entries
 	for key in getFanSpeeds():
 		text = '%s - %s' %(key, getFanSpeeds()[key])
 		entry = Gtk.MenuItem(text)
@@ -56,17 +63,29 @@ if __name__ == "__main__":
 		
 		entry.show()
 		
-	# misc options
-	dividerEntry = Gtk.MenuItem('')
+	# divider entry
+	dividerEntry = Gtk.SeparatorMenuItem()
 	menu.append(dividerEntry)
 	dividerEntry.show()
 	
+	# about menu item
 	aboutEntry = Gtk.MenuItem('About')
 	menu.append(aboutEntry)
 	aboutEntry.connect("activate", displayAbout)
-		
 	aboutEntry.show()
-		
+	
+	# terminate menu item
+	quitEntry = Gtk.MenuItem('Quit')
+	menu.append(quitEntry)
+	quitEntry.connect("activate", terminate)
+	quitEntry.show()
+	
+	# apply menu to indicator
 	indicator.set_menu(menu)
 	
 	Gtk.main()
+
+if __name__ == "__main__":
+	main()
+else:
+	print 'Please run fancontrol.py directly'
