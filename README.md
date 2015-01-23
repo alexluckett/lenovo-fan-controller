@@ -9,7 +9,7 @@ Developed for a Lenovo z570 running Ubuntu 14.10 w/ Unity. May work on other Len
 
 `find /sys/devices -name "fan_mode"`
 
-Copy and paste the file path into the `'FAN_MODE_FILE'` variable and then run fanControl.py.
+Copy and paste the file path into the `'FAN_MODE_FILE'` variable and then run fanControl.py. Ensure fileWriter.py is in the same location.
 
 Later versions of this software will have autodetection functionality.
  
