@@ -1,4 +1,4 @@
-# LenovoFanControlGUI
+# LenovoFanControl
 Fan control indicator for Ubuntu's Unity desktop.
 
 Provided as-is without support, guarantees or warranty. Use entirely at your own risk.
