@@ -11,7 +11,7 @@ import subprocess
 
 def setFanSpeed(widget, modeNumber):
 	if modeNumber in getFanSpeeds():
-		writeToFile(modeNumber)
+		subprocess.call(['gksudo', 'python', 'fileWriter.py', str(modeNumber)])
 		
 		print modeNumber,': ' + getFanSpeeds()[modeNumber], 'applied'
 	else:
@@ -19,13 +19,6 @@ def setFanSpeed(widget, modeNumber):
 
 def getFanSpeeds():
 	return {0:'Silent Mode', 1:'Standard Mode', 2:'Dust Cleaning', 4:'Thermal Dissipation'}
-
-# TODO implement
-def writeToFile(mode):
-	subprocess.call(['gksudo', 'python', 'fileWriter.py', str(mode)])
-	#f = open(FAN_MODE_FILE, 'w')
-	#print 'current file:',f
-	#f.write(str(mode))
 	
 def displayAbout(widget):
 	about = Gtk.AboutDialog()
