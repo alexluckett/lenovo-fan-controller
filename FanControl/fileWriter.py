@@ -24,9 +24,9 @@ def autoDetect():
 
     if(len(modes) == 1): # auto detect only possible if we know the one file to use. else up to user to define.
         FAN_MODE_FULLPATH = modes[0]
-        print 'Auto detected file_mode path:', FAN_MODE_FULLPATH
+        print 'Auto detected file_mode path:' + FAN_MODE_FULLPATH
     else:
-        print 'Could not auto detect file_mode path. Using user specified:', FAN_MODE_FULLPATH
+        print 'Could not auto detect file_mode path. Using user specified:' + FAN_MODE_FULLPATH
 
 
 if(autoDetectEnabled):

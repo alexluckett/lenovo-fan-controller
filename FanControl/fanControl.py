@@ -15,17 +15,22 @@ def setFanSpeed(widget, modeNumber):
 	modeNumber = modeNumber[0]
 	
 	if modeNumber in getFanSpeeds():
-		filePath = '%s/fileWriter.py' % getCurrentPath()
+		filePath = '{path}/fileWriter.py'.format(path=getCurrentPath())
 		
 		# run the fileWriter process as root, passing in the current mode as an argument
 		subprocess.call(['gksudo', 'python', filePath, str(modeNumber)]) 
 		
-		print modeNumber,': ' + getFanSpeeds()[modeNumber], 'applied'
+		print modeNumber,': ' + getFanSpeeds()[modeNumber] + ' applied'
 	else:
-		raise ValueError('Invalid fan mode entered: %s' % modeNumber)
+		raise ValueError('Invalid fan mode entered: {mode}'.format(mode=modeNumber))
 
 def getFanSpeeds():
-	return {0:'Silent Mode', 1:'Standard Mode', 2:'Dust Cleaning', 4:'Thermal Dissipation'}
+	return {
+		0:'Silent Mode',
+		1:'Standard Mode',
+		2:'Dust Cleaning',
+		4:'Thermal Dissipation'
+	}
 
 def getCurrentPath():
 	return os.path.dirname(os.path.abspath(__file__)) # retrieve the full path of this file
@@ -85,9 +90,9 @@ def main():
 	
 	# fan speed entries
 	for key in getFanSpeeds():
- 		text = '%s - %s' %(key, getFanSpeeds()[key]) # Text = 'ModeNo - Text'
+ 		text = '{number} - {text}'.format(number=key, text = getFanSpeeds()[key]) # Text = 'ModeNo - Text'
 		addMenuEntry(text, menu, setFanSpeed, key)
-		
+	
 	addDivider(menu) # divider entry
 	addMenuEntry('About', menu, displayAbout) # about menu item
 	addMenuEntry('Quit', menu, terminate) # terminate menu item
