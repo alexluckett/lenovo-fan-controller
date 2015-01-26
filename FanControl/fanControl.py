@@ -17,10 +17,14 @@ def setFanSpeed(widget, modeNumber):
 	if modeNumber in getFanSpeeds():
 		filePath = '{path}/fileWriter.py'.format(path=getCurrentPath())
 		
-		# run the fileWriter process as root, passing in the current mode as an argument
-		subprocess.call(['gksudo', 'python', filePath, str(modeNumber)]) 
+		try:
+			# run the fileWriter process as root, passing in the current mode as an argument
+			subprocess.check_output(['gksudo', 'python', filePath, str(modeNumber)])
+			
+			print modeNumber,': ' + getFanSpeeds()[modeNumber] + ' applied'
+		except Exception as e:
+			displayErrorMessage('Unable to write to fan mode file. Invalid file or autodetection failed. Please see documentation.')
 		
-		print modeNumber,': ' + getFanSpeeds()[modeNumber] + ' applied'
 	else:
 		raise ValueError('Invalid fan mode entered: {mode}'.format(mode=modeNumber))
 
@@ -54,6 +58,12 @@ def displayAbout(widget):
 		
 	about.run()
 	about.destroy()
+	
+def displayErrorMessage(text):
+	error = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE, text)
+	error.set_title('Lenovo Ideapad Fan Control Error')
+	error.run()
+	error.destroy()
 	
 def addMenuEntry(text, parent, function, *args):
 	entry = Gtk.MenuItem(text)
