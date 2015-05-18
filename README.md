@@ -4,6 +4,8 @@ Fan control indicator for Ubuntu's Unity desktop.
 Provided as-is without support, guarantees or warranty. Use entirely at your own risk.
 Developed for a Lenovo z570 running Ubuntu 14.10 w/ Unity. May work on other Lenovo Ideapad systems - see the 'Set up' section.
 
+This my first Python project - the best structure and conventions may not be adhered to while I'm still learning!
+
 ## Setup
 This script should auto detect the `'fan_mode'` file used by your operating system to set the fan speeds. Toggle it on/off by setting `autoDetectEnabled` in fileWriter to either True or False. If false, it will revert to the path stored in `FAN_MODE_FULLPATH`.
 
