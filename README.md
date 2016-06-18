@@ -16,6 +16,7 @@ This script should auto detect the `'fan_mode'` file used by your operating syst
 Copy and paste the file path into the `FAN_MODE_FULLPATH` variable and then run fanControl.py. Ensure fileWriter.py is in the same location.
  
 ## Requirements
-* Python (developed using v2.7)
+* python package installed (developed using v2.7)
+* python-gobject package installed
 * Desktop environment w/ support for Appindicators (e.g Unity)
 * gksudo package (if not present: `sudo apt-get install gksu`)
